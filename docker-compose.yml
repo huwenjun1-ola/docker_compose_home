@@ -1,0 +1,24 @@
+version: '3.1'
+services:
+  mysql:
+    image: mysql:5.7.44 #mysql版本
+    container_name: mysql5.7 # 容器名称
+    volumes:
+      - /home/ecs-user/docker_compose_home/docker_export/mysql/local:/usr/local/mysql
+      - /home/ecs-user/docker_compose_home/docker_export/mysql/conf/my.cnf:/etc/mysql/mysql.conf.d/mysqld.cnf
+    restart: always
+    ports:
+      - 3306:3306
+    environment:
+      MYSQL_ROOT_PASSWORD: 123456 #访问密码
+      secure_file_priv:
+  redis-6379: # 服务名称
+    image: redis:5.0 # 创建容器时所需的镜像
+    container_name: redis-6379 # 容器名称
+    volumes: # 数据卷，目录挂载
+      - /home/ecs-user/docker_compose_home/docker_export/redis/6379/conf/redis.conf:/usr/local/etc/redis/redis.conf
+      - /home/ecs-user/docker_compose_home/docker_export/redis/6379/data:/usr/local/redis
+    command: redis-server /usr/local/etc/redis/redis.conf # 覆盖容器启动后默认执行的命令
+    restart: always # 容器总是重新启动
+    ports:
+          - 6379:6379
